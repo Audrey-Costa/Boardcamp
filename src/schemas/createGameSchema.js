@@ -1,14 +1,4 @@
 import joi from "joi";
-import connection from "../db/pg.js";
-
-async function getCategoriesId(){
-    const {rows: categoriesIdObjects} = await connection.query(`SELECT id FROM categories`);
-    const categoriesId = [];
-    categoriesIdObjects.map((element)=>{
-        categoriesId.push(element.id)
-    })
-    return categoriesId.join();
-}
 
 const gameSchema = joi.object({
     name: joi.string().required(),

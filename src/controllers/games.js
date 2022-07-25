@@ -1,7 +1,7 @@
 import connection from "../db/pg.js";
 
 export async function listGames(req, res){
-    const filter = req.query.name.toUpperCase();
+    const filter = req.query.name?.toUpperCase();
 
     try {
         const {rows: games} = await connection.query(`SELECT * FROM games WHERE UPPER(name) LIKE '${`$1`, [filter]}%'`);
