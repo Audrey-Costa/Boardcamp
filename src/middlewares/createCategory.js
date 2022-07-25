@@ -1,4 +1,4 @@
-import categorySchema from "../schemas/createCategoryValidation.js";
+import categorySchema from "../schemas/createCategorySchema.js";
 
 export default function createCategory(req, res, next){
     const validation = categorySchema.validate(req.body, {abortEarly: false})
