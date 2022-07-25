@@ -21,23 +21,28 @@ export async function insertGames(req, res){
         pricePerDay
     } = req.body
 
-    const {rows: games} = await connection.query(`SELECT * FROM games`);
-    const exist = games.filter((element)=>{
-        return element.name === game;
+    try {
+        const {rows: games} = await connection.query(`SELECT * FROM games`);
+        const exist = games.filter((element)=>{
+            return element.name === game;
         }
-    )
-    if(exist.length>0){
-        return res.sendStatus(409);
-    }
-    const {rows: categories} = await connection.query(`SELECT id FROM categories`);
-    const dontExist = categories.filter((element)=>{
-        return element.id === categoryId;
-    })
-    if(dontExist.length === 0){
-        return res.sendStatus(400);
-    }
+        )
+        if(exist.length>0){
+            return res.sendStatus(409);
+        }
+        const {rows: categories} = await connection.query(`SELECT id FROM categories`);
+        const dontExist = categories.filter((element)=>{
+            return element.id === categoryId;
+        })
+        if(dontExist.length === 0){
+            return res.sendStatus(400);
+        }
 
-    await connection.query(`INSERT INTO games (name, image, "stockTotal", "categoryId", "pricePerDay") VALUES ($1, $2, $3, $4, $5)`, [game, image, stockTotal, categoryId, pricePerDay])
+        await connection.query(`INSERT INTO games (name, image, "stockTotal", "categoryId", "pricePerDay") VALUES ($1, $2, $3, $4, $5)`, [game, image, stockTotal, categoryId, pricePerDay])
     
-    res.status(201).send('Sem dados');
+        res.status(201).send('Sem dados');
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500);
+    }
 }
